@@ -8,11 +8,10 @@ build:
 run:
     go run .
 dev:
-    air
+    go run .
 install-deps:
-    go install github.com/cosmtrek/air@latest
     go install github.com/swaggo/swag/cmd/swag@latest
-    go install github.com/golangci-lint/golangci-lint/cmd/golangci-lint@latest
+    curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2
 deps:
     go mod download
     go mod tidy
