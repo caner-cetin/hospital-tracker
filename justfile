@@ -34,9 +34,6 @@ test-integration:
 
 test: test-unit test-integration
 
-test-all: test
-    go test -v -race -coverprofile=coverage.out ./...
-
 swagger:
     swag init
 

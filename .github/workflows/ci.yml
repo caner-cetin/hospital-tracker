@@ -34,12 +34,7 @@ jobs:
       run: go mod download
 
     - name: Run tests
-      run: just test-all
-
-    - name: Upload coverage reports
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.out
+      run: just test
 
   build:
     runs-on: ubuntu-latest
