@@ -54,9 +54,6 @@ jobs:
     - name: Build application
       run: just build
 
-    - name: Build Docker image
-      run: just docker-build
-
   lint:
     runs-on: ubuntu-latest
     steps:
