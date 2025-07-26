@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/caner-cetin/hospital-tracker/internal/models"
+	pkgerrors "github.com/pkg/errors"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
@@ -57,7 +58,7 @@ func (s *StaffService) CreateStaff(req *models.CreateStaffRequest, hospitalID ui
 
 	workingDaysJSON, err := json.Marshal(req.WorkingDays)
 	if err != nil {
-		return nil, err
+		return nil, pkgerrors.Wrap(err, "failed to marshal working days")
 	}
 
 	staff := &models.Staff{
@@ -151,7 +152,7 @@ func (s *StaffService) UpdateStaff(staffID uint, req *models.UpdateStaffRequest,
 	if len(req.WorkingDays) > 0 {
 		workingDaysJSON, err := json.Marshal(req.WorkingDays)
 		if err != nil {
-			return nil, err
+			return nil, pkgerrors.Wrap(err, "failed to marshal working days")
 		}
 		staff.WorkingDays = string(workingDaysJSON)
 	}
@@ -275,7 +276,7 @@ func (s *StaffService) GetProfessionGroups() ([]models.ProfessionGroupResponse, 
 	}
 
 	// Convert to response DTOs
-	var response []models.ProfessionGroupResponse
+	response := make([]models.ProfessionGroupResponse, 0, len(professionGroups))
 	for _, pg := range professionGroups {
 		var titles []models.TitleResponse
 		for _, title := range pg.Titles {

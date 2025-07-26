@@ -8,6 +8,7 @@ import (
 	apperrors "github.com/caner-cetin/hospital-tracker/internal/errors"
 	"github.com/caner-cetin/hospital-tracker/internal/models"
 	"github.com/golang-jwt/jwt/v5"
+	pkgerrors "github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -41,7 +42,11 @@ func (s *AuthService) HashPassword(password string) (string, error) {
 }
 
 func (s *AuthService) CheckPassword(hashedPassword, password string) error {
-	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	if err != nil {
+		return pkgerrors.Wrap(err, "password check failed")
+	}
+	return nil
 }
 
 func (s *AuthService) GenerateToken(user *models.User) (string, error) {

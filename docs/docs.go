@@ -12,8 +12,8 @@ const docTemplate = `{
         "termsOfService": "http://swagger.io/terms/",
         "contact": {},
         "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/licenses/MIT"
+            "name": "GNU GPLv3",
+            "url": "https://opensource.org/license/gpl-3-0"
         },
         "version": "{{.Version}}"
     },
@@ -313,14 +313,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Password reset successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
+                    "204": {
+                        "description": "password reset successfully"
                     },
                     "400": {
                         "description": "Bad request",
@@ -385,9 +379,12 @@ const docTemplate = `{
                     "200": {
                         "description": "List of profession groups",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.ProfessionGroup"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/models.ProfessionGroupResponse"
+                                }
                             }
                         }
                     },
@@ -1450,6 +1447,29 @@ const docTemplate = `{
                 }
             }
         },
+        "models.ProfessionGroupResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "titles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TitleResponse"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Province": {
             "type": "object",
             "properties": {
@@ -1567,6 +1587,26 @@ const docTemplate = `{
                 },
                 "profession_group": {
                     "$ref": "#/definitions/models.ProfessionGroup"
+                },
+                "profession_group_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TitleResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "profession_group_id": {
                     "type": "integer"
@@ -1733,11 +1773,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "hospital.cansu.dev",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "Hospital Tracker API",
-	Description:      "A hospital management and tracking platform",
+	Description:      "hospital management and tracking platform",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

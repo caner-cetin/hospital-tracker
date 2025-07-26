@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/caner-cetin/hospital-tracker/internal/config"
+	"github.com/pkg/errors"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
 )
@@ -22,7 +23,7 @@ func Initialize(cfg config.RedisConfig) (*redis.Client, error) {
 	_, err := client.Ping(context.Background()).Result()
 	if err != nil {
 		log.Error().Err(err).Msg("Failed to connect to Redis")
-		return nil, err
+		return nil, errors.Wrap(err, "failed to connect to Redis")
 	}
 
 	log.Info().Msg("Redis connection established")

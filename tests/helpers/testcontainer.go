@@ -9,6 +9,7 @@ import (
 	"github.com/caner-cetin/hospital-tracker/internal/config"
 	"github.com/caner-cetin/hospital-tracker/internal/database"
 	redisClient "github.com/caner-cetin/hospital-tracker/internal/redis"
+	"github.com/pkg/errors"
 	"github.com/redis/go-redis/v9"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
@@ -50,22 +51,22 @@ func SetupTestContainers(ctx context.Context) (*TestContainers, error) {
 
 	postgresHost, err := postgresContainer.Host(ctx)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to get postgres host")
 	}
 
 	postgresPort, err := postgresContainer.MappedPort(ctx, "5432")
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to get postgres port")
 	}
 
 	redisHost, err := redisContainer.Host(ctx)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to get redis host")
 	}
 
 	redisPort, err := redisContainer.MappedPort(ctx, "6379")
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to get redis port")
 	}
 
 	cfg := &config.Config{
@@ -151,5 +152,9 @@ func (tc *TestContainers) CleanDatabase() error {
 
 	tc.DB.Exec("SET session_replication_role = DEFAULT")
 
-	return tc.Redis.FlushAll(context.Background()).Err()
+	err := tc.Redis.FlushAll(context.Background()).Err()
+	if err != nil {
+		return errors.Wrap(err, "failed to flush redis")
+	}
+	return nil
 }

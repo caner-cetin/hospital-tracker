@@ -5,6 +5,7 @@ import (
 
 	"github.com/caner-cetin/hospital-tracker/internal/config"
 	"github.com/caner-cetin/hospital-tracker/internal/models"
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -19,7 +20,7 @@ func Initialize(cfg config.DatabaseConfig) (*gorm.DB, error) {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Error().Err(err).Msg("Failed to connect to database")
-		return nil, err
+		return nil, errors.Wrap(err, "failed to connect to database")
 	}
 
 	log.Info().Msg("Database connection established")
@@ -52,7 +53,7 @@ func migrate(db *gorm.DB) error {
 		&models.PasswordReset{},
 	)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to migrate base tables")
 	}
 
 	// migrate tables with dependencies
@@ -61,7 +62,7 @@ func migrate(db *gorm.DB) error {
 		&models.User{},
 	)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "failed to migrate dependency tables")
 	}
 
 	// migrate tables with circular dependencies
@@ -69,7 +70,10 @@ func migrate(db *gorm.DB) error {
 		&models.Clinic{},
 		&models.Staff{},
 	)
-	return err
+	if err != nil {
+		return errors.Wrap(err, "failed to migrate circular dependency tables")
+	}
+	return nil
 }
 
 func seedData(db *gorm.DB) error {

@@ -272,6 +272,21 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.ProfessionGroupResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      titles:
+        items:
+          $ref: '#/definitions/models.TitleResponse'
+        type: array
+      updated_at:
+        type: string
+    type: object
   models.Province:
     properties:
       created_at:
@@ -350,6 +365,19 @@ definitions:
         type: string
       profession_group:
         $ref: '#/definitions/models.ProfessionGroup'
+      profession_group_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.TitleResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
       profession_group_id:
         type: integer
       updated_at:
@@ -453,13 +481,13 @@ definitions:
     - Friday
     - Saturday
     - Sunday
-host: localhost:8080
+host: hospital.cansu.dev
 info:
   contact: {}
-  description: A hospital management and tracking platform
+  description: hospital management and tracking platform
   license:
-    name: MIT
-    url: https://opensource.org/licenses/MIT
+    name: GNU GPLv3
+    url: https://opensource.org/license/gpl-3-0
   termsOfService: http://swagger.io/terms/
   title: Hospital Tracker API
   version: "1.0"
@@ -651,12 +679,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: Password reset successfully
-          schema:
-            additionalProperties:
-              type: string
-            type: object
+        "204":
+          description: password reset successfully
         "400":
           description: Bad request
           schema:
@@ -699,9 +723,11 @@ paths:
         "200":
           description: List of profession groups
           schema:
-            items:
-              $ref: '#/definitions/models.ProfessionGroup'
-            type: array
+            additionalProperties:
+              items:
+                $ref: '#/definitions/models.ProfessionGroupResponse'
+              type: array
+            type: object
         "500":
           description: Internal server error
           schema:

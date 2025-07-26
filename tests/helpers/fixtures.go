@@ -4,6 +4,7 @@ import (
 	"github.com/caner-cetin/hospital-tracker/internal/models"
 	"github.com/caner-cetin/hospital-tracker/internal/services"
 	"github.com/go-faker/faker/v4"
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
 
@@ -68,7 +69,10 @@ func CreateTestHospital(db *gorm.DB, authService *services.AuthService) (*models
 
 	hospitalService := services.NewHospitalService(db, authService)
 	hospital, user, err := hospitalService.RegisterHospital(req)
-	return hospital, user, req.Password, err
+	if err != nil {
+		return nil, nil, "", errors.Wrap(err, "failed to register hospital")
+	}
+	return hospital, user, req.Password, nil
 }
 
 func CreateTestUser(db *gorm.DB, authService *services.AuthService, hospitalID uint, userType models.UserType) (*models.User, error) {
@@ -88,7 +92,11 @@ func CreateTestUser(db *gorm.DB, authService *services.AuthService, hospitalID u
 	}
 
 	userService := services.NewUserService(db, authService)
-	return userService.CreateUser(req, createdBy.ID, hospitalID)
+	user, err := userService.CreateUser(req, createdBy.ID, hospitalID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create user")
+	}
+	return user, nil
 }
 
 func CreateTestClinic(db *gorm.DB, hospitalID uint) (*models.Clinic, error) {
@@ -105,7 +113,11 @@ func CreateTestClinic(db *gorm.DB, hospitalID uint) (*models.Clinic, error) {
 	}
 
 	clinicService := services.NewClinicService(db)
-	return clinicService.CreateClinic(req, hospitalID)
+	clinic, err := clinicService.CreateClinic(req, hospitalID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create clinic")
+	}
+	return clinic, nil
 }
 
 func CreateTestStaff(db *gorm.DB, hospitalID uint, clinicID *uint) (*models.Staff, error) {
@@ -131,11 +143,19 @@ func CreateTestStaff(db *gorm.DB, hospitalID uint, clinicID *uint) (*models.Staf
 	}
 
 	staffService := services.NewStaffService(db, nil)
-	return staffService.CreateStaff(req, hospitalID)
+	staff, err := staffService.CreateStaff(req, hospitalID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create staff")
+	}
+	return staff, nil
 }
 
 func GetTestJWTToken(authService *services.AuthService, user *models.User) (string, error) {
-	return authService.GenerateToken(user)
+	token, err := authService.GenerateToken(user)
+	if err != nil {
+		return "", errors.Wrap(err, "failed to generate token")
+	}
+	return token, nil
 }
 
 func CreateTestPasswordReset(db *gorm.DB, phone string) (*models.PasswordReset, string, error) {
@@ -146,10 +166,13 @@ func CreateTestPasswordReset(db *gorm.DB, phone string) (*models.PasswordReset, 
 	passwordResetService := services.NewPasswordResetService(db, nil)
 	code, err := passwordResetService.RequestPasswordReset(phone)
 	if err != nil {
-		return nil, "", err
+		return nil, "", errors.Wrap(err, "failed to request password reset")
 	}
 
 	var passwordReset models.PasswordReset
 	err = db.Where("phone = ? AND code = ?", phone, code).First(&passwordReset).Error
-	return &passwordReset, code, err
+	if err != nil {
+		return nil, "", errors.Wrap(err, "failed to find password reset")
+	}
+	return &passwordReset, code, nil
 }

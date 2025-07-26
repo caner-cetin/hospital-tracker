@@ -1,17 +1,17 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "A hospital management and tracking platform",
+        "description": "hospital management and tracking platform",
         "title": "Hospital Tracker API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {},
         "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/licenses/MIT"
+            "name": "GNU GPLv3",
+            "url": "https://opensource.org/license/gpl-3-0"
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "hospital.cansu.dev",
     "basePath": "/api",
     "paths": {
         "/clinic-types": {
@@ -307,14 +307,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Password reset successfully",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
+                    "204": {
+                        "description": "password reset successfully"
                     },
                     "400": {
                         "description": "Bad request",
@@ -379,9 +373,12 @@
                     "200": {
                         "description": "List of profession groups",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.ProfessionGroup"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/models.ProfessionGroupResponse"
+                                }
                             }
                         }
                     },
@@ -1444,6 +1441,29 @@
                 }
             }
         },
+        "models.ProfessionGroupResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "titles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TitleResponse"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Province": {
             "type": "object",
             "properties": {
@@ -1561,6 +1581,26 @@
                 },
                 "profession_group": {
                     "$ref": "#/definitions/models.ProfessionGroup"
+                },
+                "profession_group_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TitleResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "profession_group_id": {
                     "type": "integer"

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/caner-cetin/hospital-tracker/internal/models"
+	"github.com/pkg/errors"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
@@ -76,7 +77,7 @@ func (s *LocationService) GetAllDistricts() ([]models.District, error) {
 func (s *LocationService) GetDistrictsByProvince(provinceIDStr string) ([]models.District, error) {
 	provinceID, err := strconv.ParseUint(provinceIDStr, 10, 32)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to parse province ID")
 	}
 
 	ctx := context.Background()
