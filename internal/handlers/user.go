@@ -19,7 +19,6 @@ func NewUserHandler(userService *services.UserService) *UserHandler {
 	}
 }
 
-
 // CreateUser godoc
 // @Summary Create a new user
 // @Description Create a new user in the hospital (requires authorization)

@@ -35,19 +35,19 @@ func HandleAppError(c *gin.Context, appErr *AppError) {
 			Str("code", string(appErr.Code)).
 			Str("message", appErr.Message).
 			Int("status_code", appErr.StatusCode)
-		
+
 		if appErr.Err != nil {
 			logger = logger.Err(appErr.Err)
 		}
-		
+
 		if appErr.Details != "" {
 			logger = logger.Str("details", appErr.Details)
 		}
-		
+
 		if len(appErr.Context) > 0 {
 			logger = logger.Interface("context", appErr.Context)
 		}
-		
+
 		logger.Msg("Internal error")
 	}
 

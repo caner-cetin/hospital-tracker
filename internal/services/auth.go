@@ -84,7 +84,7 @@ func (s *AuthService) ValidateToken(tokenString string) (*Claims, error) {
 
 func (s *AuthService) Login(identifier, password string) (*models.User, string, error) {
 	log.Info().Str("identifier", identifier).Msg("Login attempt")
-	
+
 	var user models.User
 
 	err := s.db.Where("email = ? OR phone = ?", identifier, identifier).

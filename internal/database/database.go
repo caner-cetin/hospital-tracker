@@ -12,7 +12,7 @@ import (
 
 func Initialize(cfg config.DatabaseConfig) (*gorm.DB, error) {
 	log.Info().Str("host", cfg.Host).Str("database", cfg.Name).Msg("Connecting to database")
-	
+
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		cfg.Host, cfg.User, cfg.Password, cfg.Name, cfg.Port, cfg.SSLMode)
 

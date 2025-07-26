@@ -19,7 +19,6 @@ func NewStaffHandler(staffService *services.StaffService) *StaffHandler {
 	}
 }
 
-
 // CreateStaff godoc
 // @Summary Create a new staff member
 // @Description Create a new staff member in the hospital (requires authorization)

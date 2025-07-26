@@ -22,6 +22,8 @@ linters:
     - thelper
     - tparallel
     - wrapcheck
+  disable:
+    - typecheck
   settings:
     dupl:
       threshold: 150

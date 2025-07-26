@@ -287,7 +287,7 @@ func (s *StaffService) GetProfessionGroups() ([]models.ProfessionGroupResponse, 
 				UpdatedAt:         title.UpdatedAt,
 			})
 		}
-		
+
 		response = append(response, models.ProfessionGroupResponse{
 			ID:        pg.ID,
 			Name:      pg.Name,

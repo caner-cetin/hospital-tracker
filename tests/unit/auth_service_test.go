@@ -125,7 +125,7 @@ func (suite *AuthServiceTestSuite) TestLoginInvalidCredentials() {
 	suite.Require().NotNil(hospital)
 	suite.Require().NotNil(user)
 
-	loginUser, token, err := suite.authService.Login(user.Email, password + "wrong")
+	loginUser, token, err := suite.authService.Login(user.Email, password+"wrong")
 	suite.Error(err)
 	suite.Nil(loginUser)
 	suite.Empty(token)

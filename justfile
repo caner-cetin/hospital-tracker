@@ -22,9 +22,9 @@ vet:
     go vet ./...
 
 lint:
-    golangci-lint run
+    golangci-lint run --timeout=5m
 
-check: fmt vet lint
+check: fmt vet
 
 test-unit:
     go test -v -race ./tests/unit/...

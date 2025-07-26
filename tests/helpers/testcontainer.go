@@ -134,7 +134,7 @@ func (tc *TestContainers) Cleanup(ctx context.Context) error {
 
 func (tc *TestContainers) CleanDatabase() error {
 	tc.DB.Exec("SET session_replication_role = replica")
-	
+
 	tables := []string{
 		"staffs",
 		"password_resets",
@@ -148,7 +148,7 @@ func (tc *TestContainers) CleanDatabase() error {
 			fmt.Printf("Warning: failed to clean table %s: %v\n", table, err)
 		}
 	}
-	
+
 	tc.DB.Exec("SET session_replication_role = DEFAULT")
 
 	return tc.Redis.FlushAll(context.Background()).Err()

@@ -24,7 +24,7 @@ import (
 // @license.name GNU GPLv3
 // @license.url https://opensource.org/license/gpl-3-0
 
-// @host localhost:8080
+// @host hospital.cansu.dev
 // @BasePath /api
 
 // @securityDefinitions.apikey Bearer
@@ -58,7 +58,7 @@ func main() {
 
 	log.Info().Str("port", cfg.Server.Port).Msg("Server starting")
 	log.Info().Str("url", "http://localhost:"+cfg.Server.Port+"/swagger/index.html").Msg("Swagger documentation available")
-	
+
 	if err := r.Run(":" + cfg.Server.Port); err != nil {
 		log.Fatal().Err(err).Msg("Failed to start server")
 	}
