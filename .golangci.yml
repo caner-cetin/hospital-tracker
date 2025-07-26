@@ -1,4 +1,4 @@
-# version: "2"
+version: "2"
 run:
   build-tags:
     - integration
@@ -22,8 +22,6 @@ linters:
     - thelper
     - tparallel
     - wrapcheck
-  disable:
-    - typecheck
   settings:
     dupl:
       threshold: 150
@@ -82,6 +80,11 @@ linters:
         - github.com/caner-cetin/halycon/internal/*
   exclusions:
     generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
     rules:
       - linters:
           - dupl
@@ -99,14 +102,13 @@ linters:
       - third_party$
       - builtin$
       - examples$
-    presets:
-      - comments
+      - third_party$
+      - builtin$
+      - examples$
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
 formatters:
-  enable:
-    - gofmt
   exclusions:
     generated: lax
     paths:
