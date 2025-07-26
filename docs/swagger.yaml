@@ -1,0 +1,1134 @@
+basePath: /api
+definitions:
+  models.Clinic:
+    properties:
+      clinic_type:
+        $ref: '#/definitions/models.ClinicType'
+      clinic_type_id:
+        type: integer
+      created_at:
+        type: string
+      deleted_at:
+        format: date-time
+        type: string
+      hospital:
+        $ref: '#/definitions/models.Hospital'
+      hospital_id:
+        type: integer
+      id:
+        type: integer
+      staff:
+        items:
+          $ref: '#/definitions/models.Staff'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  models.ClinicType:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.CreateClinicRequest:
+    properties:
+      clinic_type_id:
+        type: integer
+    required:
+    - clinic_type_id
+    type: object
+  models.CreateStaffRequest:
+    properties:
+      clinic_id:
+        type: integer
+      first_name:
+        type: string
+      last_name:
+        type: string
+      national_id:
+        type: string
+      phone:
+        type: string
+      profession_group_id:
+        type: integer
+      title_id:
+        type: integer
+      working_days:
+        items:
+          $ref: '#/definitions/models.WorkingDay'
+        type: array
+    required:
+    - first_name
+    - last_name
+    - national_id
+    - phone
+    - profession_group_id
+    - title_id
+    type: object
+  models.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      national_id:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone:
+        type: string
+      user_type:
+        allOf:
+        - $ref: '#/definitions/models.UserType'
+        enum:
+        - authorized
+        - employee
+    required:
+    - email
+    - first_name
+    - last_name
+    - national_id
+    - password
+    - phone
+    - user_type
+    type: object
+  models.District:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      province:
+        $ref: '#/definitions/models.Province'
+      province_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+  models.Hospital:
+    properties:
+      address:
+        type: string
+      clinics:
+        items:
+          $ref: '#/definitions/models.Clinic'
+        type: array
+      created_at:
+        type: string
+      deleted_at:
+        format: date-time
+        type: string
+      district:
+        $ref: '#/definitions/models.District'
+      district_id:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      province:
+        $ref: '#/definitions/models.Province'
+      province_id:
+        type: integer
+      staff:
+        items:
+          $ref: '#/definitions/models.Staff'
+        type: array
+      tax_id:
+        type: string
+      updated_at:
+        type: string
+      users:
+        items:
+          $ref: '#/definitions/models.User'
+        type: array
+    type: object
+  models.HospitalRegistrationRequest:
+    properties:
+      address:
+        type: string
+      district_id:
+        type: integer
+      email:
+        type: string
+      first_name:
+        type: string
+      hospital_name:
+        type: string
+      last_name:
+        type: string
+      national_id:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone:
+        type: string
+      province_id:
+        type: integer
+      tax_id:
+        type: string
+      user_email:
+        type: string
+      user_phone:
+        type: string
+    required:
+    - address
+    - district_id
+    - email
+    - first_name
+    - hospital_name
+    - last_name
+    - national_id
+    - password
+    - phone
+    - province_id
+    - tax_id
+    - user_email
+    - user_phone
+    type: object
+  models.LoginRequest:
+    properties:
+      identifier:
+        type: string
+      password:
+        type: string
+    required:
+    - identifier
+    - password
+    type: object
+  models.LoginResponse:
+    properties:
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      user_type:
+        type: string
+    type: object
+  models.PasswordResetConfirmRequest:
+    properties:
+      code:
+        type: string
+      confirm_password:
+        minLength: 6
+        type: string
+      new_password:
+        minLength: 6
+        type: string
+      phone:
+        type: string
+    required:
+    - code
+    - confirm_password
+    - new_password
+    - phone
+    type: object
+  models.PasswordResetRequest:
+    properties:
+      phone:
+        type: string
+    required:
+    - phone
+    type: object
+  models.PasswordResetResponse:
+    properties:
+      code:
+        type: string
+    type: object
+  models.ProfessionGroup:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      titles:
+        items:
+          $ref: '#/definitions/models.Title'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  models.Province:
+    properties:
+      created_at:
+        type: string
+      districts:
+        items:
+          $ref: '#/definitions/models.District'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Staff:
+    properties:
+      clinic:
+        $ref: '#/definitions/models.Clinic'
+      clinic_id:
+        type: integer
+      created_at:
+        type: string
+      deleted_at:
+        format: date-time
+        type: string
+      first_name:
+        type: string
+      hospital:
+        $ref: '#/definitions/models.Hospital'
+      hospital_id:
+        type: integer
+      id:
+        type: integer
+      last_name:
+        type: string
+      national_id:
+        type: string
+      phone:
+        type: string
+      profession_group:
+        $ref: '#/definitions/models.ProfessionGroup'
+      profession_group_id:
+        type: integer
+      title:
+        $ref: '#/definitions/models.Title'
+      title_id:
+        type: integer
+      updated_at:
+        type: string
+      working_days:
+        type: string
+    type: object
+  models.StaffPaginatedResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Staff'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total_count:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  models.Title:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      profession_group:
+        $ref: '#/definitions/models.ProfessionGroup'
+      profession_group_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.UpdateStaffRequest:
+    properties:
+      clinic_id:
+        type: integer
+      first_name:
+        type: string
+      last_name:
+        type: string
+      national_id:
+        type: string
+      phone:
+        type: string
+      profession_group_id:
+        type: integer
+      title_id:
+        type: integer
+      working_days:
+        items:
+          $ref: '#/definitions/models.WorkingDay'
+        type: array
+    type: object
+  models.UpdateUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      national_id:
+        type: string
+      phone:
+        type: string
+      user_type:
+        allOf:
+        - $ref: '#/definitions/models.UserType'
+        enum:
+        - authorized
+        - employee
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        $ref: '#/definitions/models.User'
+      created_by_id:
+        type: integer
+      deleted_at:
+        format: date-time
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      hospital:
+        $ref: '#/definitions/models.Hospital'
+      hospital_id:
+        type: integer
+      id:
+        type: integer
+      last_name:
+        type: string
+      national_id:
+        type: string
+      phone:
+        type: string
+      updated_at:
+        type: string
+      user_type:
+        $ref: '#/definitions/models.UserType'
+    type: object
+  models.UserType:
+    enum:
+    - authorized
+    - employee
+    type: string
+    x-enum-varnames:
+    - UserTypeAuthorized
+    - UserTypeEmployee
+  models.WorkingDay:
+    enum:
+    - monday
+    - tuesday
+    - wednesday
+    - thursday
+    - friday
+    - saturday
+    - sunday
+    type: string
+    x-enum-varnames:
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    - Sunday
+host: localhost:8080
+info:
+  contact: {}
+  description: A hospital management and tracking platform
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Hospital Tracker API
+  version: "1.0"
+paths:
+  /clinic-types:
+    get:
+      description: Get all available clinic types for creating clinics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of clinic types
+          schema:
+            items:
+              $ref: '#/definitions/models.ClinicType'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all clinic types
+      tags:
+      - Reference Data
+  /clinics:
+    get:
+      description: Get all clinics in the hospital
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of clinics
+          schema:
+            items:
+              $ref: '#/definitions/models.Clinic'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Get all clinics
+      tags:
+      - Clinics
+    post:
+      consumes:
+      - application/json
+      description: Create a new clinic in the hospital (requires authorization)
+      parameters:
+      - description: Clinic creation data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateClinicRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Clinic created successfully
+          schema:
+            $ref: '#/definitions/models.Clinic'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Create a new clinic
+      tags:
+      - Clinics
+  /clinics/{id}:
+    delete:
+      description: Delete a clinic from the hospital (requires authorization)
+      parameters:
+      - description: Clinic ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Clinic deleted successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Clinic not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Delete a clinic
+      tags:
+      - Clinics
+  /districts:
+    get:
+      description: Get all districts or districts filtered by province
+      parameters:
+      - description: Province ID to filter districts
+        in: query
+        name: province_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of districts
+          schema:
+            items:
+              $ref: '#/definitions/models.District'
+            type: array
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get districts
+      tags:
+      - Reference Data
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login with email/phone and password
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: User login
+      tags:
+      - Authentication
+  /password-reset/confirm:
+    post:
+      consumes:
+      - application/json
+      description: Reset password using the verification code
+      parameters:
+      - description: Password reset confirmation data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.PasswordResetConfirmRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Password reset successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Confirm password reset
+      tags:
+      - Authentication
+  /password-reset/request:
+    post:
+      consumes:
+      - application/json
+      description: Request a password reset code via phone number
+      parameters:
+      - description: Phone number for password reset
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.PasswordResetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Reset code sent
+          schema:
+            $ref: '#/definitions/models.PasswordResetResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Request password reset
+      tags:
+      - Authentication
+  /profession-groups:
+    get:
+      description: Get all available profession groups for staff
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of profession groups
+          schema:
+            items:
+              $ref: '#/definitions/models.ProfessionGroup'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all profession groups
+      tags:
+      - Reference Data
+  /provinces:
+    get:
+      description: Get all provinces in the country
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of provinces
+          schema:
+            items:
+              $ref: '#/definitions/models.Province'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all provinces
+      tags:
+      - Reference Data
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new hospital with authorized user
+      parameters:
+      - description: Hospital registration data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.HospitalRegistrationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Hospital registered successfully
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Register a new hospital
+      tags:
+      - Hospital
+  /staff:
+    get:
+      description: Get staff members with optional filtering by clinic, profession
+        group, etc.
+      parameters:
+      - description: Filter by clinic ID
+        in: query
+        name: clinic_id
+        type: integer
+      - description: Filter by profession group ID
+        in: query
+        name: profession_group_id
+        type: integer
+      - description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of staff members
+          schema:
+            $ref: '#/definitions/models.StaffPaginatedResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Get staff members with filtering
+      tags:
+      - Staff
+    post:
+      consumes:
+      - application/json
+      description: Create a new staff member in the hospital (requires authorization)
+      parameters:
+      - description: Staff creation data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateStaffRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Staff created successfully
+          schema:
+            $ref: '#/definitions/models.Staff'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Create a new staff member
+      tags:
+      - Staff
+  /staff/{id}:
+    delete:
+      description: Delete a staff member from the hospital (requires authorization)
+      parameters:
+      - description: Staff ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Staff deleted successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Staff not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Delete a staff member
+      tags:
+      - Staff
+    get:
+      description: Get detailed information about a specific staff member
+      parameters:
+      - description: Staff ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Staff member information
+          schema:
+            $ref: '#/definitions/models.Staff'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Staff not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Get a staff member by ID
+      tags:
+      - Staff
+    put:
+      consumes:
+      - application/json
+      description: Update staff member information (requires authorization)
+      parameters:
+      - description: Staff ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Staff update data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateStaffRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Staff updated successfully
+          schema:
+            $ref: '#/definitions/models.Staff'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Staff not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Update a staff member
+      tags:
+      - Staff
+  /users:
+    get:
+      description: Get all users in the hospital
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of users
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Get all users
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user in the hospital (requires authorization)
+      parameters:
+      - description: User creation data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Create a new user
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      description: Delete a user from the hospital (requires authorization)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User deleted successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Delete a user
+      tags:
+      - Users
+    get:
+      description: Get detailed information about a specific user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User information
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Get a user by ID
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Update user information (requires authorization)
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User update data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User updated successfully
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Update a user
+      tags:
+      - Users
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
