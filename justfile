@@ -35,8 +35,14 @@ test-integration:
 
 test: test-unit test-integration
 
+test-all: test
+    go test -v -race -coverprofile=coverage.out ./...
+
 swagger:
     swag init
+
+docker-build:
+    docker build -t hospital-tracker .
 
 clean:
     rm -rf bin/
